@@ -20,7 +20,7 @@ func Serve(router *mux.Router, store *storage.Storage, kiss *kiss.Kiss) {
 	sr.HandleFunc("/test", handler.test).Methods(http.MethodGet)
 	sr.HandleFunc("/packages", handler.pkgs).Methods(http.MethodGet)
 	sr.HandleFunc("/packages/{name}", handler.findPkg).Methods(http.MethodGet)
-	sr.HandleFunc("/packages/{name}/log/{timestamp:[0-9]+}", handler.findLog).Methods(http.MethodGet)
+	sr.HandleFunc("/packages/{name}/logs/{timestamp:[0-9]+}", handler.findLog).Methods(http.MethodGet)
 
 	sr.HandleFunc("/users", handler.users).Methods(http.MethodGet)
 	sr.HandleFunc("/users/{name}", handler.findUserPkg).Methods(http.MethodGet)

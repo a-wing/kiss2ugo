@@ -48,12 +48,6 @@ func main() {
 		}
 
 		lilacrepo.Sync()
-		//if err := lilacrepo.GetUsers(); err != nil {
-		//	fmt.Println(err)
-		//}
-		//if err := lilacrepo.GetSubName(); err != nil {
-		//	fmt.Println(err)
-		//}
 
 		fmt.Println("=== migrate end ===")
 		return

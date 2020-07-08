@@ -65,7 +65,7 @@ func (l *LilacRepo) GetPkgUsers() error {
 		if err != nil {
 			//return err
 		}
-		pkg.Maintainers = user
+		pkg.Users = user
 		l.store.PutPkg(pkg)
 	}
 	return nil
