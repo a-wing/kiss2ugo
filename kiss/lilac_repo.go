@@ -24,6 +24,31 @@ func (l *LilacRepo) Sync() error {
 	l.GetPkgUsers()
 	l.GetSubName()
 	l.GetUsers()
+	l.SyncPkg()
+	return nil
+}
+
+func (l *LilacRepo) SyncPkg() error {
+	pkgs, err := l.store.GetMapPkgs()
+	if err != nil {
+		return err
+	}
+
+	pkgUsers, err := util.LilacGetMaintainers(l.path)
+	if err != nil {
+		//return err
+	}
+
+	for pkgname, _ := range pkgUsers {
+		delete(pkgs, pkgname)
+	}
+
+	for name, _ := range pkgs {
+		if err := l.store.RemovePkg(name); err != nil {
+			fmt.Println(err)
+		}
+	}
+
 	return nil
 }
 
