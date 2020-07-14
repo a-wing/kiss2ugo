@@ -18,6 +18,8 @@ func Serve(router *mux.Router, store *storage.Storage, kiss *kiss.Kiss) {
 	sr.Methods(http.MethodOptions)
 
 	sr.HandleFunc("/test", handler.test).Methods(http.MethodGet)
+	sr.PathPrefix("/docs/").Handler(http.StripPrefix("/api/v2/docs/", http.FileServer(http.Dir("docs/")))).Methods(http.MethodGet)
+
 	sr.HandleFunc("/packages", handler.pkgs).Methods(http.MethodGet)
 	sr.HandleFunc("/packages/{name}", handler.findPkg).Methods(http.MethodGet)
 	sr.HandleFunc("/packages/{name}/logs/{timestamp:[0-9]+}", handler.findLog).Methods(http.MethodGet)
