@@ -9,9 +9,9 @@ type Pkg struct {
 }
 
 type BuildLog struct {
-	During  int    `json:"during"`
-	Version string `json:"version"`
-	Status  string `json:"status"`
+	Duration int    `json:"duration"`
+	Version  string `json:"version"`
+	Status   string `json:"status"`
 }
 
 func NewPkg() *Pkg {

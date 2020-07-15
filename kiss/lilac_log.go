@@ -23,7 +23,7 @@ type lilacJSONLog struct {
 	LoggerName string  `json:"logger_name"`
 	Pkgbase    string  `json:"pkgbase"`
 	Version    string  `json:"pkg_version"`
-	During     float64 `json:"elapsed"`
+	Duration   float64 `json:"elapsed"`
 	Status     string  `json:"event"`
 	Time       float64 `json:"ts"`
 }
@@ -85,9 +85,9 @@ func (l *LilacLog) DoLog(data []byte) error {
 	pkg.Name = log.Pkgbase
 	pkg.Version = log.Version
 	pkg.Log[int(log.Time)] = model.BuildLog{
-		Version: log.Version,
-		During:  int(log.During),
-		Status:  log.Status,
+		Version:  log.Version,
+		Duration: int(log.Duration),
+		Status:   log.Status,
 	}
 
 	return l.store.PutPkg(pkg)
