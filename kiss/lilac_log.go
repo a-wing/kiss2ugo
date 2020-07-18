@@ -7,8 +7,8 @@ import (
 	"io"
 	"os"
 
+	storage "kiss2u/cache"
 	"kiss2u/model"
-	"kiss2u/storage"
 	"kiss2u/util"
 
 	"github.com/hpcloud/tail"

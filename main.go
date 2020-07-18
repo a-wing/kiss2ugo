@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -11,54 +10,31 @@ import (
 	"time"
 
 	"kiss2u/api"
+	"kiss2u/cache"
 	"kiss2u/config"
 	"kiss2u/kiss"
-	"kiss2u/storage"
 
 	"github.com/gorilla/mux"
-	"github.com/syndtr/goleveldb/leveldb"
-)
-
-const (
-	flagMigrateHelp = "Run data migrations"
 )
 
 func main() {
-	var (
-		flagMigrate bool
-	)
-
-	flag.BoolVar(&flagMigrate, "migrate", false, flagMigrateHelp)
-	flag.Parse()
-
 	parse := config.NewParser()
 	opts, err := parse.ParseEnvironmentVariables()
 	if err != nil {
 		panic(err)
 	}
 
-	db, err := leveldb.OpenFile(opts.DatabaseURL(), nil)
-	if err != nil {
-		panic(err)
-	}
-
-	store := storage.NewStorage(db)
+	store := cache.NewStorage()
 	lilaclog := kiss.NewLilacLog(store, opts.LilacLog())
 	lilacrepo := kiss.NewLilacRepo(store, opts.LilacRepo())
 
-	if flagMigrate {
-		err = lilaclog.Migrate()
-		if err != nil {
-			panic(err)
-		}
-
-		lilacrepo.Sync()
-
-		fmt.Println("=== migrate end ===")
-		return
+	err = lilaclog.Migrate()
+	if err != nil {
+		panic(err)
 	}
+	lilacrepo.Sync()
 
-	fmt.Println("++++++++++")
+	fmt.Println("Start Service")
 
 	go lilaclog.WatchJSON()
 	if err != nil {
@@ -91,8 +67,6 @@ func main() {
 
 	<-stop
 	fmt.Println("Shutting down the process...")
-
-	db.Close()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

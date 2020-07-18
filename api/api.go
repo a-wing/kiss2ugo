@@ -3,8 +3,8 @@ package api
 import (
 	"net/http"
 
+	storage "kiss2u/cache"
 	"kiss2u/kiss"
-	"kiss2u/storage"
 
 	"github.com/gorilla/mux"
 )

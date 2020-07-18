@@ -2,8 +2,9 @@ package kiss
 
 import (
 	"fmt"
+
+	storage "kiss2u/cache"
 	"kiss2u/model"
-	"kiss2u/storage"
 	"kiss2u/util"
 )
 
@@ -29,9 +30,15 @@ func (l *LilacRepo) Sync() error {
 }
 
 func (l *LilacRepo) SyncPkg() error {
-	pkgs, err := l.store.GetMapPkgs()
+	raw_pkgs, err := l.store.GetMapPkgs()
 	if err != nil {
 		return err
+	}
+
+	// Note: Must deep copy
+	pkgs := make(map[string]bool)
+	for k, _ := range raw_pkgs {
+		pkgs[k] = true
 	}
 
 	pkgUsers, err := util.LilacGetMaintainers(l.path)
