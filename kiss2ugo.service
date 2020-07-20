@@ -1,0 +1,13 @@
+[Unit]
+Description=KISS2U v2 application server
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+EnvironmentFile=/etc/kiss2u.conf
+ExecStart=/usr/bin/kiss2u
+Restart=always
+
+[Install]
+WantedBy=default.target
