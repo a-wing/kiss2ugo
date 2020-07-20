@@ -4,7 +4,6 @@ After=network.target
 
 [Service]
 Type=simple
-User=nobody
 EnvironmentFile=/etc/kiss2u.conf
 ExecStart=/usr/bin/kiss2u
 Restart=always
