@@ -25,8 +25,9 @@ func main() {
 	}
 
 	store := cache.NewStorage()
+
 	lilaclog := kiss.NewLilacLog(store, opts.LilacLog())
-	lilacrepo := kiss.NewLilacRepo(store, opts.LilacRepo())
+	lilacrepo := kiss.NewLilacRepo(store, opts.LilacRepo(), opts.RepoName())
 
 	err = lilaclog.Migrate()
 	if err != nil {

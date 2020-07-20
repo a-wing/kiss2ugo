@@ -2,6 +2,7 @@ package kiss
 
 import (
 	"fmt"
+	"path/filepath"
 
 	storage "kiss2u/cache"
 	"kiss2u/model"
@@ -13,10 +14,10 @@ type LilacRepo struct {
 	store *storage.Storage
 }
 
-func NewLilacRepo(store *storage.Storage, path string) *LilacRepo {
+func NewLilacRepo(store *storage.Storage, path, name string) *LilacRepo {
 	return &LilacRepo{
 		store: store,
-		path:  path,
+		path:  filepath.Join(path, name),
 	}
 }
 

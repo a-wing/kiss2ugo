@@ -35,12 +35,12 @@ func (p *Parser) parseLines(lines []string) (err error) {
 			port = value
 		case "LISTEN_ADDR":
 			p.opts.listenAddr = parseString(value, defaultListenAddr)
-		case "DATABASE_URL":
-			p.opts.databaseURL = parseString(value, defaultDatabaseURL)
 		case "LILAC_LOG":
 			p.opts.lilacLog = parseString(value, defaultLilacLog)
 		case "LILAC_REPO":
 			p.opts.lilacRepo = parseString(value, defaultLilacRepo)
+		case "REPO_NAME":
+			p.opts.repoName = parseString(value, defaultRepoName)
 		}
 	}
 

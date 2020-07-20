@@ -1,32 +1,34 @@
 package config
 
+import (
+	"os"
+	"path/filepath"
+)
+
 const (
-	defaultDatabaseURL = "leveldb"
-	defaultListenAddr  = "127.0.0.1:22333"
-	defaultLilacLog    = "/home/lilydjwg/.lilac"
-	defaultLilacRepo   = "/data/archgitrepo-webhook/archlinuxcn"
+	defaultListenAddr = "127.0.0.1:22333"
+	defaultLilacLog   = ".lilac"
+	defaultLilacRepo  = "Code/archlinuxcn/repo"
+	defaultRepoName   = "archlinuxcn"
 )
 
 // Options contains configuration options.
 type Options struct {
-	databaseURL string
-	listenAddr  string
-	lilacLog    string
-	lilacRepo   string
+	listenAddr string
+	lilacLog   string
+	lilacRepo  string
+	repoName   string
 }
 
 // NewOptions returns Options with default values.
 func NewOptions() *Options {
+	home, _ := os.UserHomeDir()
 	return &Options{
-		databaseURL: defaultDatabaseURL,
-		listenAddr:  defaultListenAddr,
-		lilacLog:    defaultLilacLog,
-		lilacRepo:   defaultLilacRepo,
+		listenAddr: defaultListenAddr,
+		lilacLog:   filepath.Join(home, defaultLilacLog),
+		lilacRepo:  filepath.Join(home, defaultLilacRepo),
+		repoName:   defaultRepoName,
 	}
-}
-
-func (o *Options) DatabaseURL() string {
-	return o.databaseURL
 }
 
 func (o *Options) ListenAddr() string {
@@ -39,4 +41,8 @@ func (o *Options) LilacLog() string {
 
 func (o *Options) LilacRepo() string {
 	return o.lilacRepo
+}
+
+func (o *Options) RepoName() string {
+	return o.repoName
 }
