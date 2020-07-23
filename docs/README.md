@@ -81,3 +81,23 @@ users     | []string | Maintainer
 
 `POST /api/v2/webhooks/sync`
 
+## SDK
+
+> Client usage example
+
+```go
+import (
+	"fmt"
+
+	"github.com/a-wing/kiss2ugo/client"
+)
+
+func main() {
+	pkgs, err := client.NewClient("https://build.archlinuxcn.org/api/v2/").GetPkgs()
+
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println((*pkgs)[0])
+}
+```
