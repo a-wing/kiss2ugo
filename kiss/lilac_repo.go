@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 
 	storage "kiss2u/cache"
+	"kiss2u/lilac"
 	"kiss2u/model"
-	"kiss2u/util"
 )
 
 type LilacRepo struct {
@@ -42,9 +42,9 @@ func (l *LilacRepo) SyncPkg() error {
 		pkgs[k] = true
 	}
 
-	pkgUsers, err := util.LilacGetMaintainers(l.path)
+	pkgUsers, err := lilac.GetMaintainers(l.path)
 	if err != nil {
-		//return err
+		return err
 	}
 
 	for pkgname, _ := range pkgUsers {
@@ -61,9 +61,9 @@ func (l *LilacRepo) SyncPkg() error {
 }
 
 func (l *LilacRepo) GetUsers() error {
-	pkgUsers, err := util.LilacGetMaintainers(l.path)
+	pkgUsers, err := lilac.GetMaintainers(l.path)
 	if err != nil {
-		//return err
+		return err
 	}
 
 	// Reverse user and package relationships
@@ -88,9 +88,9 @@ func (l *LilacRepo) GetUsers() error {
 }
 
 func (l *LilacRepo) GetPkgUsers() error {
-	users, err := util.LilacGetMaintainers(l.path)
+	users, err := lilac.GetMaintainers(l.path)
 	if err != nil {
-		//return err
+		return err
 	}
 
 	for name, user := range users {
@@ -105,9 +105,9 @@ func (l *LilacRepo) GetPkgUsers() error {
 }
 
 func (l *LilacRepo) GetSubName() error {
-	lilac, err := util.LilacGetSplitList(l.path)
+	lilac, err := lilac.GetSplitList(l.path)
 	if err != nil {
-		//return err
+		return err
 	}
 
 	for name, subname := range lilac {

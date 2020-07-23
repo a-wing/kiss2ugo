@@ -3,30 +3,16 @@ package kiss
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 
 	storage "kiss2u/cache"
+	"kiss2u/lilac"
 	"kiss2u/model"
-	"kiss2u/util"
 
 	"github.com/hpcloud/tail"
 )
-
-const (
-	lilacBuildLogJSON = "/build-log.json"
-	lilacBuildLogPath = "/log"
-)
-
-type lilacJSONLog struct {
-	LoggerName string  `json:"logger_name"`
-	Pkgbase    string  `json:"pkgbase"`
-	Version    string  `json:"pkg_version"`
-	Duration   float64 `json:"elapsed"`
-	Status     string  `json:"event"`
-	Time       float64 `json:"ts"`
-}
 
 type LilacLog struct {
 	store *storage.Storage
@@ -41,7 +27,7 @@ func NewLilacLog(store *storage.Storage, path string) *LilacLog {
 }
 
 func (l *LilacLog) Migrate() error {
-	file, err := os.Open(l.path + lilacBuildLogJSON)
+	file, err := os.Open(filepath.Join(l.path, lilac.BuildLogJSON))
 	if err != nil {
 		return err
 	}
@@ -49,7 +35,7 @@ func (l *LilacLog) Migrate() error {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		l.DoLog(scanner.Bytes())
+		l.HandleLog(scanner.Bytes())
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -60,27 +46,24 @@ func (l *LilacLog) Migrate() error {
 }
 
 func (l *LilacLog) WatchJSON() error {
-	t, err := tail.TailFile(l.path+lilacBuildLogJSON, tail.Config{Follow: true})
+	t, err := tail.TailFile(filepath.Join(l.path, lilac.BuildLogJSON), tail.Config{Follow: true})
 	if err != nil {
 		return err
 	}
 	for line := range t.Lines {
-		l.DoLog([]byte(line.Text))
+		l.HandleLog([]byte(line.Text))
 	}
 	return nil
 }
 
-func (l *LilacLog) DoLog(data []byte) error {
-	var log lilacJSONLog
+func (l *LilacLog) HandleLog(data []byte) error {
+	var log lilac.LogJSON
 	err := json.Unmarshal(data, &log)
 	if err != nil {
 		return err
 	}
 
-	pkg, err := l.store.FindPkg(log.Pkgbase)
-	if err != nil {
-		fmt.Println(err)
-	}
+	pkg, _ := l.store.FindPkg(log.Pkgbase)
 
 	pkg.Name = log.Pkgbase
 	pkg.Version = log.Version
@@ -94,7 +77,7 @@ func (l *LilacLog) DoLog(data []byte) error {
 }
 
 func (l *LilacLog) GetLog(name string, timestamp int64) (io.Reader, error) {
-	path, err := util.LilacGetLog(l.path+lilacBuildLogPath, name, "+08:00", timestamp)
+	path, err := lilac.GetLogPath(filepath.Join(l.path, lilac.BuildLogPath), "+08:00", name, timestamp)
 	if err != nil {
 		r, _ := io.Pipe()
 		return r, err
