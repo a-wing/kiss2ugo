@@ -1,0 +1,3 @@
+[submodule "KISS2UI"]
+	path = KISS2UI
+	url = https://github.com/a-wing/KISS2UI
