@@ -73,6 +73,12 @@ func (l *LilacLog) HandleLog(data []byte) error {
 		Status:   log.Status,
 	}
 
+	// Hot pkg
+	l.store.PutHotPkg(log.Pkgbase)
+	if log.Status == lilac.BuildStatusStart {
+		l.store.CleanHotPkgs()
+	}
+
 	return l.store.PutPkg(pkg)
 }
 

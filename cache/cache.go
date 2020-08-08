@@ -3,6 +3,7 @@ package cache
 type Storage struct {
 	Pkgs
 	Users
+	HotPkgs
 }
 
 func NewStorage() *Storage {

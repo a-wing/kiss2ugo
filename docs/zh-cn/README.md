@@ -2,6 +2,14 @@
 
 ## Package
 
+### getHotPackages
+
+> 获取新鲜出炉的包信息
+
+`GET /api/v2/hot/packages`
+
+返回的格式和 `getAllPackages` 一样
+
 ### getAllPackages
 
 > 获取全部包信息

@@ -12,6 +12,11 @@ const (
 	BuildLogPath = "log"
 )
 
+const (
+	BuildStatusStart = "build start"
+	BuildStatusStop  = "build end"
+)
+
 type LogJSON struct {
 	LoggerName string  `json:"logger_name"`
 	Pkgbase    string  `json:"pkgbase"`

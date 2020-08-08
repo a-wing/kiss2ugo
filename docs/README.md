@@ -2,6 +2,14 @@
 
 ## Package
 
+### getHotPackages
+
+> GET Hot packages information
+
+`GET /api/v2/hot/packages`
+
+Return result format with `getAllPackages`
+
 ### getAllPackages
 
 > GET All packages information
