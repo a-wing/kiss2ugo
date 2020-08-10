@@ -1,3 +1,4 @@
+data/*_vfsdata.go
 tests/test_db/
 leveldb
 kiss2u

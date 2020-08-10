@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	storage "kiss2u/cache"
+	"kiss2u/data"
 	"kiss2u/kiss"
 
 	"github.com/gorilla/mux"
@@ -18,7 +19,7 @@ func Serve(router *mux.Router, store *storage.Storage, kiss *kiss.Kiss) {
 	sr.Methods(http.MethodOptions)
 
 	sr.HandleFunc("/test", handler.test).Methods(http.MethodGet)
-	sr.PathPrefix("/docs/").Handler(http.StripPrefix("/api/v2/docs/", http.FileServer(http.Dir("docs/")))).Methods(http.MethodGet)
+	sr.PathPrefix("/docs/").Handler(http.StripPrefix("/api/v2/docs/", http.FileServer(data.Docs))).Methods(http.MethodGet)
 
 	sr.HandleFunc("/hot/packages", handler.hotPkgs).Methods(http.MethodGet)
 

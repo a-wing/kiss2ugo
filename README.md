@@ -3,11 +3,19 @@
 
 kiss2u V2
 
+## Dev run
+
+```sh
+go run -tags=dev ./main.go
+```
+
 ## Build
 
 * golang >= 1.12.x
 
 ```sh
+go generate
+
 go build
 ```
 
